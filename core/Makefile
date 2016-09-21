@@ -1955,10 +1955,10 @@ ifeq ($(BOARD_USES_FULL_RECOVERY_IMAGE),true)
 	$(hide) echo "full_recovery_image=true" >> $(zip_root)/META/misc_info.txt
 endif
 	$(call generate-userimage-prop-dictionary, $(zip_root)/META/misc_info.txt)
-ifneq ($(INSTALLED_RECOVERYIMAGE_TARGET),)
-	$(hide) PATH=$(foreach p,$(INTERNAL_USERIMAGES_BINARY_PATHS),$(p):)$$PATH MKBOOTIMG=$(MKBOOTIMG) \
-	    ./build/tools/releasetools/make_recovery_patch $(zip_root) $(zip_root)
-endif
+#ifneq ($(INSTALLED_RECOVERYIMAGE_TARGET),)
+#	$(hide) PATH=$(foreach p,$(INTERNAL_USERIMAGES_BINARY_PATHS),$(p):)$$PATH MKBOOTIMG=$(MKBOOTIMG) \
+#	    ./build/tools/releasetools/make_recovery_patch $(zip_root) $(zip_root)
+#endif
 ifeq ($(AB_OTA_UPDATER),true)
 	@# When using the A/B updater, include the updater config files in the zip.
 	$(hide) $(ACP) $(TOPDIR)system/update_engine/update_engine.conf $(zip_root)/META/update_engine_config.txt
@@ -2030,7 +2030,7 @@ $(INTERNAL_OTA_PACKAGE_TARGET): KEY_CERT_PAIR := $(DEFAULT_KEY_CERT_PAIR)
 
 $(INTERNAL_OTA_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE)
 	@echo "Package OTA: $@"
-	$(hide) PATH=$(foreach p,$(INTERNAL_USERIMAGES_BINARY_PATHS),$(p):)$$PATH MKBOOTIMG=$(MKBOOTIMG) \
+	$(hide) PATH=$(foreach p,$(INTERNAL_USERIMAGES_BINARY_PATHS),$(p):)$$PATH MKBOOTIMG=$(BOARD_CUSTOM_BOOTIMG_MK) \
 	   ./build/tools/releasetools/ota_from_target_files -v \
 	   --block \
 	   -p $(HOST_OUT) \
@@ -2056,7 +2056,7 @@ INTERNAL_UPDATE_PACKAGE_TARGET := $(PRODUCT_OUT)/$(name).zip
 
 $(INTERNAL_UPDATE_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE)
 	@echo "Package: $@"
-	$(hide) PATH=$(foreach p,$(INTERNAL_USERIMAGES_BINARY_PATHS),$(p):)$$PATH MKBOOTIMG=$(MKBOOTIMG) \
+	$(hide) PATH=$(foreach p,$(INTERNAL_USERIMAGES_BINARY_PATHS),$(p):)$$PATH MKBOOTIMG=$(BOARD_CUSTOM_BOOTIMG_MK) \
 	   ./build/tools/releasetools/img_from_target_files -v \
 	   -p $(HOST_OUT) \
 	   $(BUILT_TARGET_FILES_PACKAGE) $@
